@@ -522,18 +522,17 @@ def train():
         #                                                                                         name=None,
         #                                                                                         grad_loss=None)
     saver = tf.train.Saver(max_to_keep=500, write_version=1)
-    train_op = (tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(loss=tf_loss))
-    tf.global_variables_initializer().run()
-        #tf.get_variable_scope().reuse_variables()
+    
+    
+    #tf.get_variable_scope().reuse_variables()
     #with tf.variable_scope("train") as scope:
     #  scope.reuse_variables() 
     
-    #tf.get_variable_scope().reuse_variables()  
-    #with tf.variable_scope('opt',reuse=None):  
-    #with tf.variable_scope(tf.get_variable_scope(),reuse=False):          
-      
+    with tf.variable_scope(tf.get_variable_scope(),reuse=False) as scope:
+        scope.reuse_variables() 
+        train_op = (tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(loss=tf_loss))
 
-    
+    tf.global_variables_initializer().run() 
 
     # when you want to train the model from the front model
     #new_saver = tf.train.Saver(max_to_keep=500)
